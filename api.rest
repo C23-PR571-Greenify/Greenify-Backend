@@ -1,0 +1,26 @@
+# GET ALL USERS
+GET http://localhost:3000/users
+
+
+###
+# GET SINGLE USER BY ID
+GET http://localhost:3000/users/1
+
+
+###
+# USER REGISTRATION
+POST http://localhost:3000/users/signup
+Content-Type: application/json
+
+{
+      "fullname": "John Doe",
+      "username": "john",
+      "email": "john@gmail.com",
+      "password": "123",
+      "phone": "+628218724924",
+      "confirmPassword" : "123"
+}
+
+###
+#  DELETE USER BY ID
+DELETE http://localhost:3000/users/2

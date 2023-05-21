@@ -1,6 +1,4 @@
-const {
-  Model,
-} = require('sequelize');
+const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -9,29 +7,42 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
 
-  User.init({
-    fullname: {
-      type: DataTypes.STRING,
-      allowNull: false,
+  User.init(
+    {
+      fullname: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      username: {
+        type: DataTypes.STRING,
+        unique: true,
+      },
+      email: {
+        type: DataTypes.STRING,
+        unique: true,
+      },
+      password: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      phone: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      refresh_token: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
     },
-    username: {
-      type: DataTypes.STRING,
-      unique: true,
-    },
-    email: {
-      type: DataTypes.STRING,
-      unique: true,
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    phone: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-  }, {
-    sequelize,
-  });
+    {
+      sequelize,
+    }
+  );
+
+  // (async () => {
+  //   await User.sync({ force: true });
+  //   console.log("All models were synchronized successfully.");
+  // })();
+
   return User;
 };

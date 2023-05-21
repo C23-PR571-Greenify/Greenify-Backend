@@ -13,9 +13,9 @@ POST http://localhost:3000/users/signup
 Content-Type: application/json
 
 {
-      "fullname": "John Doe",
-      "username": "john",
-      "email": "john@gmail.com",
+      "fullname": "John Doe 2",
+      "username": "john1",
+      "email": "john2@gmail.com",
       "password": "123",
       "phone": "+628218724924",
       "confirmPassword" : "123"
@@ -23,4 +23,20 @@ Content-Type: application/json
 
 ###
 #  DELETE USER BY ID
-DELETE http://localhost:3000/users/2
+DELETE http://localhost:3000/users/3
+
+
+###
+# UPDATE USER BY ID
+
+PUT http://localhost:3000/users/1
+Content-Type: application/json
+
+{
+      "fullname": "John Doe a",
+      "username" : "jojon",
+      "email" : "yo@gmail.com",
+      "phone" : "111"
+}
+
+

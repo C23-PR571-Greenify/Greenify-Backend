@@ -78,7 +78,7 @@ async function updateUser(req, res) {
         },
       }
     );
-    res.status(200).json({ msg: `User with id : ${id} has beed deleted` });
+    res.status(200).json({ msg: `User with id : ${id} has beed updated` });
   } catch (error) {
     console.log(error.message);
   }

@@ -54,6 +54,9 @@ async function deleteUser(req, res) {
 
 // TODO UPDATE USER BY ID
 async function updateUser(req, res) {
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken) return res.sendStatus(403);
+  
   const { fullname, username, email, phone } = req.body;
   const { id } = req.params;
   const singleUser = await User.findOne({

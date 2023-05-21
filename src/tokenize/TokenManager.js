@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const config = require('../config/config');
+const jwt = require("jsonwebtoken");
+const config = require("../config/config");
 
 module.exports = {
   generateAcessToken: (payload) => {
@@ -18,5 +18,4 @@ module.exports = {
     }
     return userData;
   },
-
 };

@@ -7,9 +7,11 @@ const {
   updateUser,
 } = require("./handler");
 
+const { verifyToken } = require("../../middleware/VerifyToken");
+
 const router = express.Router();
 
-router.get("/", getAllUsersHandler);
+router.get("/", verifyToken, getAllUsersHandler);
 router.get("/:id", getSingleUser);
 router.post("/signup", Registration);
 router.delete("/:id", deleteUser);

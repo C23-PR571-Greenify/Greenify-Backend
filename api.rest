@@ -1,5 +1,6 @@
 # GET ALL USERS
 GET http://localhost:3000/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZnVsbG5hbWUiOiJKb2huIERvZSB1cGRhdGUiLCJ1c2VybmFtZSI6ImpvaG51cGRhdGUiLCJlbWFpbCI6ImpvaG51cGRhdGVAZ21haWwuY29tIiwicGhvbmUiOiIxMTEiLCJpYXQiOjE2ODQ2NTQ1NzEsImV4cCI6MTY4NDY1NDYwMX0.fgVVz25VPWf4jA0ap46DXLdOkacl7HqZXe1ycCU4gzA
 
 
 ###
@@ -15,7 +16,7 @@ Content-Type: application/json
 {
       "fullname": "John Doe 2",
       "username": "john1",
-      "email": "john2@gmail.com",
+      "email": "q@gmail.com",
       "password": "123",
       "phone": "+628218724924",
       "confirmPassword" : "123"
@@ -33,10 +34,28 @@ PUT http://localhost:3000/users/1
 Content-Type: application/json
 
 {
-      "fullname": "John Doe a",
-      "username" : "jojon",
-      "email" : "yo@gmail.com",
+      "fullname": "John Doe update",
+      "username" : "johnupdate",
+      "email" : "johnupdate@gmail.com",
       "phone" : "111"
 }
 
 
+###
+# LOGIN USER
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email" : "yo@gmail.com",
+  "password" : "123"
+}
+
+###
+# LOGOUT USER
+GET http://localhost:3000/auth/logout
+
+
+###
+# GENERATE ACCESS TOKEN EXPIRED IN 30s
+GET http://localhost:3000/auth/token

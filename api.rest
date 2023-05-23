@@ -1,6 +1,6 @@
 # GET ALL USERS
 GET http://localhost:3000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZnVsbG5hbWUiOiJKb2huIERvZSB1cGRhdGVzIiwidXNlcm5hbWUiOiJqb2hudXBkYXRlIiwiZW1haWwiOiJqb2hudXBkYXRlQGdtYWlsLmNvbSIsInBob25lIjoiMTExIiwiaWF0IjoxNjg0NzYxMzUxLCJleHAiOjE2ODQ3NjEzODF9.4yjwe2RCtp9qZz-O8MPlk_Alan4A2Sdk8uF3YxCcplk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZnVsbG5hbWUiOiJKb2huIERvZSIsInVzZXJuYW1lIjoiam9obiIsImVtYWlsIjoiam9obkBnbWFpbC5jb20iLCJwaG9uZSI6Iis2MjgyMTg3MjQ5MjQiLCJpYXQiOjE2ODQ4NTE3NDQsImV4cCI6MTY4NDg1MTc3NH0.E0NgidcyEgx7JoLANIP7jPabJc4440Ox-ayOy_gwJcc
 
 
 ###
@@ -46,7 +46,7 @@ POST http://localhost:3000/users/forgotpassword
 Content-Type: application/json
 
 {
-      "email" : "johnupdate@gmail.com",
+      "email" : "john@gmail.com",
       "password" : "123",
       "confirmPassword" : "123"
 }
@@ -59,8 +59,8 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email" : "johnupdate@gmail.com",
-  "password" : "321"
+  "email" : "john@gmail.com",
+  "password" : "123"
 }
 
 ###

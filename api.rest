@@ -1,0 +1,75 @@
+# GET ALL USERS
+GET http://localhost:3000/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZnVsbG5hbWUiOiJKb2huIERvZSB1cGRhdGVzIiwidXNlcm5hbWUiOiJqb2hudXBkYXRlIiwiZW1haWwiOiJqb2hudXBkYXRlQGdtYWlsLmNvbSIsInBob25lIjoiMTExIiwiaWF0IjoxNjg0NzYxMzUxLCJleHAiOjE2ODQ3NjEzODF9.4yjwe2RCtp9qZz-O8MPlk_Alan4A2Sdk8uF3YxCcplk
+
+
+###
+# GET SINGLE USER BY ID
+GET http://localhost:3000/users/1
+
+
+###
+# USER REGISTRATION
+POST http://localhost:3000/users/signup
+Content-Type: application/json
+
+{
+      "fullname": "John Doe",
+      "username": "john",
+      "email": "john@gmail.com",
+      "password": "123",
+      "phone": "+628218724924",
+      "confirmPassword" : "123"
+}
+
+###
+#  DELETE USER BY ID
+DELETE http://localhost:3000/users/3
+
+
+###
+# UPDATE USER BY ID
+
+PUT http://localhost:3000/users/1
+Content-Type: application/json
+
+{
+      "fullname": "John Doe update",
+      "username" : "johnupdate",
+      "email" : "johnupdate@gmail.com",
+      "phone" : "111"
+}
+
+###
+# FORGOT PASSWORD
+POST http://localhost:3000/users/forgotpassword
+Content-Type: application/json
+
+{
+      "email" : "johnupdate@gmail.com",
+      "password" : "123",
+      "confirmPassword" : "123"
+}
+
+
+
+###
+# LOGIN USER
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email" : "johnupdate@gmail.com",
+  "password" : "321"
+}
+
+###
+# LOGOUT USER
+GET http://localhost:3000/auth/logout
+
+
+
+
+###
+# GENERATE ACCESS TOKEN EXPIRED IN 30s
+GET http://localhost:3000/auth/token

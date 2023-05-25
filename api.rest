@@ -16,7 +16,7 @@ Content-Type: application/json
 {
       "fullname": "John Doe",
       "username": "john",
-      "email": "john@gmail.com",
+      "email": "airdropfamilia@gmail.com",
       "password": "123",
       "phone": "+628218724924",
       "confirmPassword" : "123"
@@ -73,3 +73,23 @@ GET http://localhost:3000/auth/logout
 ###
 # GENERATE ACCESS TOKEN EXPIRED IN 30s
 GET http://localhost:3000/auth/token
+
+###
+# VERIFY OTP USER
+POST http://localhost:3000/auth/verifyotp
+Content-Type: application/json
+
+{
+  "user_id" : "16",
+  "otp" : "79197"
+}
+
+###
+# RESEND OTP USER
+POST http://localhost:3000/auth/resendotp
+Content-Type: application/json
+
+{
+  "user_id" : "16",
+  "email" : "airdropfamilia@gmail.com"
+}

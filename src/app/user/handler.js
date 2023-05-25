@@ -1,5 +1,6 @@
 const { User } = require("../../models");
 const bcrypt = require("bcrypt");
+const { sendOTPVerificationEmail } = require("../auth/handler");
 
 // TODO GET ALL USERS
 async function getAllUsersHandler(req, res) {
@@ -107,10 +108,10 @@ async function Registration(req, res) {
     return res.status(400).json({ msg: "Password doesn't match" });
 
   const saltRounds = 10;
-  const hashedPassword = await bcrypt.hashSync(password, saltRounds);
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
 
   try {
-    await User.create({
+    const newUser = await User.create({
       fullname: fullname,
       username: username,
       email: email,
@@ -118,7 +119,11 @@ async function Registration(req, res) {
       phone: phone,
       verified: false,
     });
-    res.status(200).json({ msg: "Success Registration" });
+
+    await sendOTPVerificationEmail(
+      { id: newUser.user_id, email: newUser.email },
+      res
+    );
   } catch (error) {
     console.log(error.message);
   }

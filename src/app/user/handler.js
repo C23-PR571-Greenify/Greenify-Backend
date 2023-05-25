@@ -5,7 +5,7 @@ const bcrypt = require("bcrypt");
 async function getAllUsersHandler(req, res) {
   try {
     const users = await User.findAll({
-      attributes: ["id", "fullname", "username", "email", "phone"],
+      attributes: ["user_id", "fullname", "username", "email", "phone"],
     });
     if (!users) return res.status(404).json({ msg: "Users is empty" });
     res.status(200).json(users);
@@ -19,9 +19,9 @@ async function getSingleUser(req, res) {
   const { id } = req.params;
   try {
     const users = await User.findOne({
-      attributes: ["id", "fullname", "username", "email", "phone"],
+      attributes: ["user_id", "fullname", "username", "email", "phone"],
       where: {
-        id: id,
+        user_id: id,
       },
     });
     if (!users)
@@ -37,7 +37,7 @@ async function deleteUser(req, res) {
   const { id } = req.params;
   const singleUser = await User.findOne({
     where: {
-      id: id,
+      user_id: id,
     },
   });
   if (!singleUser)
@@ -46,7 +46,7 @@ async function deleteUser(req, res) {
   try {
     await User.destroy({
       where: {
-        id: singleUser.id,
+        user_id: singleUser.user_id,
       },
     });
     res.status(200).json({ msg: `User with id : ${id} has beed deleted` });
@@ -64,7 +64,7 @@ async function updateUser(req, res) {
   const { id } = req.params;
   const singleUser = await User.findOne({
     where: {
-      id: id,
+      user_id: id,
     },
   });
 
@@ -80,7 +80,7 @@ async function updateUser(req, res) {
       },
       {
         where: {
-          id: singleUser.id,
+          user_id: singleUser.user_id,
         },
       }
     );
@@ -152,7 +152,7 @@ async function forgotPassword(req, res) {
       },
       {
         where: {
-          id: singleUser.id,
+          user_id: singleUser.user_id,
         },
       }
     );

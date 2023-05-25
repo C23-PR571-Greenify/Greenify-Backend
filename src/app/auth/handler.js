@@ -25,7 +25,7 @@ async function postLoginHandler(req, res) {
     if (!Match) return res.status(400).json({ msg: "Password doesn't match" });
 
     const payloadUser = {
-      id: response.id,
+      user_id: response.user_id,
       fullname: response.fullname,
       username: response.username,
       email: response.email,
@@ -44,7 +44,7 @@ async function postLoginHandler(req, res) {
       { refresh_token: refreshToken },
       {
         where: {
-          id: response.id,
+          user_id: response.user_id,
         },
       }
     );
@@ -75,7 +75,7 @@ async function getLogoutHandler(req, res) {
       { refresh_token: null },
       {
         where: {
-          id: singleUser.id,
+          user_id: singleUser.user_id,
         },
       }
     );
@@ -109,7 +109,7 @@ async function generateAccessTokenHandler(req, res) {
     if (!singleUser) return res.status(404).json({ msg: "User not found" });
 
     const payloadUser = {
-      id: singleUser.id,
+      user_id: singleUser.user_id,
       fullname: singleUser.fullname,
       username: singleUser.username,
       email: singleUser.email,

@@ -4,11 +4,17 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate() {
       // define association here
+      User.hasMany(sequelize.models.otpToken, { foreignKey: "user_id" });
     }
   }
 
   User.init(
     {
+      user_id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       fullname: {
         type: DataTypes.STRING,
         allowNull: false,

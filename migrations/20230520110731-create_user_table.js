@@ -33,6 +33,10 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true,
       },
+      verified: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+      },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE,
     });

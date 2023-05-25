@@ -116,6 +116,7 @@ async function Registration(req, res) {
       email: email,
       password: hashedPassword,
       phone: phone,
+      verified: false,
     });
     res.status(200).json({ msg: "Success Registration" });
   } catch (error) {

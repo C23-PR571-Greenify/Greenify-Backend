@@ -33,10 +33,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  // (async () => {
-  //   await otpToken.sync({ force: true });
-  //   console.log("All models were synchronized successfully.");
-  // })();
 
   return otpToken;
 };

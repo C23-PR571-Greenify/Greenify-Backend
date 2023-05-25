@@ -6,5 +6,7 @@ module.exports = {
     refreshTokenSecret: process.env.JWT_REFRESH_TOKEN_SECRET,
     accessTokenLife: process.env.JWT_ACCESS_TOKEN_LIFE,
     refreshTokenLife: process.env.JWT_REFRESH_TOKEN_LIFE,
+    gmailServices: process.env.GMAIL_SERVICES,
+    passwordServices: process.env.PASSWORD_SERVICES,
   },
 };

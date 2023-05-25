@@ -1,11 +1,11 @@
 # GET ALL USERS
 GET http://localhost:3000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJmdWxsbmFtZSI6IkpvaG4gRG9lIiwidXNlcm5hbWUiOiJqb2huIiwiZW1haWwiOiJqb2huQGdtYWlsLmNvbSIsInBob25lIjoiKzYyODIxODcyNDkyNCIsImlhdCI6MTY4NDk4MjU2MSwiZXhwIjoxNjg0OTgyNTkxfQ.Hcaz1RD7FvxlAsNIjn4EQCvCjdnj0ka4Cti0K53J3iQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxOSwiZnVsbG5hbWUiOiJKb2huIERvZSIsInVzZXJuYW1lIjoiam9objEyMyIsImVtYWlsIjoienVsbnVyZGlhbmFAZ21haWwuY29tIiwicGhvbmUiOiIrNjI4MjE4NzI0OTI0IiwiaWF0IjoxNjg1MDIwMTE1LCJleHAiOjE2ODUwMjAxNDV9.-kYRZAruHw6pS93Lu8GnNcti6cN8ZaTvVF4lKfl_Ud8
 
 
 ###
 # GET SINGLE USER BY ID
-GET http://localhost:3000/users/1
+GET http://localhost:3000/users/19
 
 
 ###
@@ -15,8 +15,8 @@ Content-Type: application/json
 
 {
       "fullname": "John Doe",
-      "username": "john",
-      "email": "airdropfamilia@gmail.com",
+      "username": "john123",
+      "email": "zulnurdiana@gmail.com",
       "password": "123",
       "phone": "+628218724924",
       "confirmPassword" : "123"
@@ -59,7 +59,7 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email" : "john@gmail.com",
+  "email" : "zulnurdiana@gmail.com",
   "password" : "123"
 }
 
@@ -80,8 +80,8 @@ POST http://localhost:3000/auth/verifyotp
 Content-Type: application/json
 
 {
-  "user_id" : "16",
-  "otp" : "79197"
+  "user_id" : "19",
+  "otp" : "11472"
 }
 
 ###

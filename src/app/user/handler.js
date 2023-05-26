@@ -1,11 +1,12 @@
 const { User } = require("../../models");
 const bcrypt = require("bcrypt");
+const { sendOTPVerificationEmail } = require("../auth/handler");
 
 // TODO GET ALL USERS
 async function getAllUsersHandler(req, res) {
   try {
     const users = await User.findAll({
-      attributes: ["id", "fullname", "username", "email", "phone"],
+      attributes: ["user_id", "fullname", "username", "email", "phone"],
     });
     if (!users) return res.status(404).json({ msg: "Users is empty" });
     res.status(200).json(users);
@@ -19,9 +20,9 @@ async function getSingleUser(req, res) {
   const { id } = req.params;
   try {
     const users = await User.findOne({
-      attributes: ["id", "fullname", "username", "email", "phone"],
+      attributes: ["user_id", "fullname", "username", "email", "phone"],
       where: {
-        id: id,
+        user_id: id,
       },
     });
     if (!users)
@@ -37,7 +38,7 @@ async function deleteUser(req, res) {
   const { id } = req.params;
   const singleUser = await User.findOne({
     where: {
-      id: id,
+      user_id: id,
     },
   });
   if (!singleUser)
@@ -46,7 +47,7 @@ async function deleteUser(req, res) {
   try {
     await User.destroy({
       where: {
-        id: singleUser.id,
+        user_id: singleUser.user_id,
       },
     });
     res.status(200).json({ msg: `User with id : ${id} has beed deleted` });
@@ -64,7 +65,7 @@ async function updateUser(req, res) {
   const { id } = req.params;
   const singleUser = await User.findOne({
     where: {
-      id: id,
+      user_id: id,
     },
   });
 
@@ -80,7 +81,7 @@ async function updateUser(req, res) {
       },
       {
         where: {
-          id: singleUser.id,
+          user_id: singleUser.user_id,
         },
       }
     );
@@ -107,17 +108,22 @@ async function Registration(req, res) {
     return res.status(400).json({ msg: "Password doesn't match" });
 
   const saltRounds = 10;
-  const hashedPassword = await bcrypt.hashSync(password, saltRounds);
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
 
   try {
-    await User.create({
+    const newUser = await User.create({
       fullname: fullname,
       username: username,
       email: email,
       password: hashedPassword,
       phone: phone,
+      verified: false,
     });
-    res.status(200).json({ msg: "Success Registration" });
+
+    await sendOTPVerificationEmail(
+      { id: newUser.user_id, email: newUser.email },
+      res
+    );
   } catch (error) {
     console.log(error.message);
   }
@@ -152,7 +158,7 @@ async function forgotPassword(req, res) {
       },
       {
         where: {
-          id: singleUser.id,
+          user_id: singleUser.user_id,
         },
       }
     );

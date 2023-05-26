@@ -4,7 +4,7 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable("Users", {
-      id: {
+      user_id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -31,6 +31,10 @@ module.exports = {
       },
       refresh_token: {
         type: Sequelize.TEXT,
+        allowNull: true,
+      },
+      verified: {
+        type: Sequelize.BOOLEAN,
         allowNull: true,
       },
       createdAt: Sequelize.DATE,

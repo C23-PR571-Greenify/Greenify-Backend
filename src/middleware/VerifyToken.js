@@ -9,7 +9,7 @@ module.exports = {
 
     if (!Token) return res.sendStatus(401);
     jwt.verify(Token, accessSecret, (err, decode) => {
-      if (err) return res.sendStatus(403);
+      if (err) return res.status(403).json({ msg: "Please login first" });
       req.email = decode.email;
       next();
     });

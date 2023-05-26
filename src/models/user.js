@@ -4,11 +4,17 @@ module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate() {
       // define association here
+      User.hasMany(sequelize.models.otpToken, { foreignKey: "user_id" });
     }
   }
 
   User.init(
     {
+      user_id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
       fullname: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -33,6 +39,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
+      verified: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+      },
     },
     {
       sequelize,
@@ -40,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   // (async () => {
-  //   await User.sync({ force: true });
+  //   await sequelize.sync({ force: true });
   //   console.log("All models were synchronized successfully.");
   // })();
 

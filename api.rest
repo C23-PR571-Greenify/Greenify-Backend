@@ -15,8 +15,8 @@ Content-Type: application/json
 
 {
       "fullname": "John Doe",
-      "username": "john1",
-      "email": "zulnurdianaa@gmail.com",
+      "username": "john",
+      "email": "zulnurdian4@gmail.com",
       "password": "123",
       "phone": "+628218724924",
       "confirmPassword" : "123"
@@ -59,7 +59,7 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email" : "zulnurdiana@gmail.com",
+  "email" : "zulnurdian4@gmail.com",
   "password" : "123"
 }
 

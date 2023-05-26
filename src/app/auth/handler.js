@@ -1,7 +1,17 @@
-const { User } = require("../../models");
+const { User, otpToken } = require("../../models");
 const bcrypt = require("bcrypt");
 const config = require("../../config/config");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
+
+// SERVICES FOR SEND OTP TO USERS
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: config.otp.gmailServices,
+    pass: config.otp.passwordServices,
+  },
+});
 
 // TODO USER LOGIN
 async function postLoginHandler(req, res) {
@@ -25,7 +35,7 @@ async function postLoginHandler(req, res) {
     if (!Match) return res.status(400).json({ msg: "Password doesn't match" });
 
     const payloadUser = {
-      id: response.id,
+      user_id: response.user_id,
       fullname: response.fullname,
       username: response.username,
       email: response.email,
@@ -44,7 +54,7 @@ async function postLoginHandler(req, res) {
       { refresh_token: refreshToken },
       {
         where: {
-          id: response.id,
+          user_id: response.user_id,
         },
       }
     );
@@ -75,7 +85,7 @@ async function getLogoutHandler(req, res) {
       { refresh_token: null },
       {
         where: {
-          id: singleUser.id,
+          user_id: singleUser.user_id,
         },
       }
     );
@@ -109,7 +119,7 @@ async function generateAccessTokenHandler(req, res) {
     if (!singleUser) return res.status(404).json({ msg: "User not found" });
 
     const payloadUser = {
-      id: singleUser.id,
+      user_id: singleUser.user_id,
       fullname: singleUser.fullname,
       username: singleUser.username,
       email: singleUser.email,
@@ -129,8 +139,136 @@ async function generateAccessTokenHandler(req, res) {
   }
 }
 
+// TODO SEND OTP VERIFICATION TO USER
+async function sendOTPVerificationEmail({ id, email }, res) {
+  try {
+    // Generate OTP with 5 digit integer
+    const OTP = `${Math.floor(1000 + Math.random() * 90000)}`;
+
+    // Email option
+    const mailOptions = {
+      from: config.otp.gmailServices,
+      to: email,
+      subject: "Verify your Email",
+      html: `<p>Enter <b>${OTP}</b> to verify your gmail registration </p><p>This code <b>expires in 1 Hours</b></p>`,
+    };
+
+    // Hash OTP
+    const saltRounds = 10;
+    const hashedOTP = await bcrypt.hash(OTP, saltRounds);
+    await otpToken.create({
+      user_id: id,
+      otp: hashedOTP,
+      createdAt: Date.now(),
+      expiresAt: Date.now() + 3600000,
+    });
+    await transporter.sendMail(mailOptions);
+    res.json({
+      status: "PENDING",
+      msg: "Verification code has been sent please check your email",
+      data: {
+        userId: id,
+        email,
+      },
+    });
+  } catch (error) {
+    res.json({
+      status: "FAILED",
+      msg: error.message,
+    });
+  }
+}
+
+// TODO VERIFY OTP VERIFICATION
+async function verifyOTP(req, res) {
+  try {
+    const { user_id, otp } = req.body;
+    if (!user_id || !otp) {
+      throw Error("Empty otp is now allowed");
+    } else {
+      const checkUserRecord = await otpToken.findOne({
+        where: {
+          user_id: user_id,
+        },
+      });
+      // IF ANY RECORD
+      if (checkUserRecord && checkUserRecord.length > 0) {
+        throw new Error("user doesn't exist or has been verified");
+      } else {
+        // USER OTP EXIST
+        const expiresAt = checkUserRecord.expiresAt;
+        const hashedOTP = checkUserRecord.otp;
+        if (expiresAt < Date.now()) {
+          // THE OTP EXPIRED
+          await otpToken.destroy({
+            where: {
+              user_id: user_id,
+            },
+          });
+          throw new Error("The code has expired, please request again");
+        } else {
+          // OTP NOT EXPIRED
+          const validOTP = await bcrypt.compare(otp, hashedOTP);
+          if (!validOTP) {
+            // SUPPLIED OTP IS WRONG
+            throw new Error("Invalid code, please check your inbox");
+          } else {
+            // SUPPLIED OTP IS CORRECT
+            await User.update(
+              { verified: true },
+              {
+                where: {
+                  user_id: user_id,
+                },
+              }
+            );
+            await otpToken.destroy({
+              where: {
+                user_id: user_id,
+              },
+            });
+            res.json({
+              status: "VERIFIED",
+              msg: "User email has been verified",
+            });
+          }
+        }
+      }
+    }
+  } catch (error) {
+    res.json({
+      status: "FAILED",
+      msg: error.message,
+    });
+  }
+}
+
+// TODO RESEND OTP VERIFICATION TO USER
+async function resendOTPVerificationEmail(req, res) {
+  try {
+    const { user_id, email } = req.body;
+    if (!user_id || !email) {
+      throw Error("Empty user is now allowed");
+    } else {
+      await otpToken.destroy({
+        where: {
+          user_id: user_id,
+        },
+      });
+      await sendOTPVerificationEmail({ id: user_id, email }, res);
+    }
+  } catch (error) {
+    res.json({
+      status: "FAILED",
+      msg: error.message,
+    });
+  }
+}
 module.exports = {
   postLoginHandler,
   generateAccessTokenHandler,
   getLogoutHandler,
+  sendOTPVerificationEmail,
+  verifyOTP,
+  resendOTPVerificationEmail,
 };

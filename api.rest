@@ -1,11 +1,11 @@
 # GET ALL USERS
 GET http://localhost:3000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxOSwiZnVsbG5hbWUiOiJKb2huIERvZSIsInVzZXJuYW1lIjoiam9objEyMyIsImVtYWlsIjoienVsbnVyZGlhbmFAZ21haWwuY29tIiwicGhvbmUiOiIrNjI4MjE4NzI0OTI0IiwiaWF0IjoxNjg1MDIwMTE1LCJleHAiOjE2ODUwMjAxNDV9.-kYRZAruHw6pS93Lu8GnNcti6cN8ZaTvVF4lKfl_Ud8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyMiwiZnVsbG5hbWUiOiJKb2huIERvZSIsInVzZXJuYW1lIjoiam9obiIsImVtYWlsIjoienVsbnVyZGlhbjRAZ21haWwuY29tIiwicGhvbmUiOiIrNjI4MjE4NzI0OTI0IiwiaWF0IjoxNjg1MDIxODUxLCJleHAiOjE2ODUwMjE4ODF9.amenPxUZlnWT4OaiXML6HyuE15jAUlGo5DcAtnyPkYI
 
 
 ###
 # GET SINGLE USER BY ID
-GET http://localhost:3000/users/19
+GET http://localhost:3000/users/22
 
 
 ###
@@ -15,8 +15,8 @@ Content-Type: application/json
 
 {
       "fullname": "John Doe",
-      "username": "john123",
-      "email": "zulnurdiana@gmail.com",
+      "username": "john",
+      "email": "zulnurdian4@gmail.com",
       "password": "123",
       "phone": "+628218724924",
       "confirmPassword" : "123"
@@ -59,7 +59,7 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email" : "zulnurdiana@gmail.com",
+  "email" : "zulnurdian4@gmail.com",
   "password" : "123"
 }
 
@@ -80,8 +80,8 @@ POST http://localhost:3000/auth/verifyotp
 Content-Type: application/json
 
 {
-  "user_id" : "19",
-  "otp" : "11472"
+  "user_id" : "22",
+  "otp" : "47992"
 }
 
 ###

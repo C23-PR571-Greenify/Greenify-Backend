@@ -64,7 +64,15 @@ async function postLoginHandler(req, res) {
       maxAge: 86400000,
     });
 
-    res.json({ accessToken });
+    res.json({
+      error: false,
+      msg: "Login success",
+      loginResult: {
+        userId: response.id,
+        name: response.fullname,
+        token: accessToken,
+      },
+    });
   } catch (error) {
     res.status(400).json({ msg: `User with email : ${email} not found` });
   }
@@ -164,7 +172,7 @@ async function sendOTPVerificationEmail({ id, email }, res) {
     });
     await transporter.sendMail(mailOptions);
     res.json({
-      status: "PENDING",
+      error: false,
       msg: "Verification code has been sent please check your email",
       data: {
         userId: id,

@@ -32,7 +32,10 @@ async function postLoginHandler(req, res) {
     });
 
     const Match = await bcrypt.compare(password, response.password);
-    if (!Match) return res.status(400).json({ msg: "Password doesn't match" });
+    if (!Match)
+      return res
+        .status(400)
+        .json({ error: true, msg: "Password doesn't match" });
 
     const payloadUser = {
       user_id: response.user_id,
@@ -74,7 +77,9 @@ async function postLoginHandler(req, res) {
       },
     });
   } catch (error) {
-    res.status(400).json({ msg: `User with email : ${email} not found` });
+    res
+      .status(400)
+      .json({ error: true, msg: `User with email : ${email} not found` });
   }
 }
 

@@ -7,6 +7,7 @@ const cors = require("cors");
 const userRouter = require("./app/user/route");
 const authRouter = require("./app/auth/route");
 const categoryRouter = require("./app/category/route");
+const tourismRouter = require("./app/tourism/route");
 
 const app = express();
 
@@ -20,5 +21,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
 app.use("/categories", categoryRouter);
+app.use("/tourism", tourismRouter);
 
 module.exports = app;

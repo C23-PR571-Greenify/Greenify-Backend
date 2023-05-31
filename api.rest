@@ -1,6 +1,6 @@
 # GET ALL USERS
 GET http://localhost:3000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyMiwiZnVsbG5hbWUiOiJKb2huIERvZSIsInVzZXJuYW1lIjoiam9obiIsImVtYWlsIjoienVsbnVyZGlhbjRAZ21haWwuY29tIiwicGhvbmUiOiIrNjI4MjE4NzI0OTI0IiwiaWF0IjoxNjg1MDIxODUxLCJleHAiOjE2ODUwMjE4ODF9.amenPxUZlnWT4OaiXML6HyuE15jAUlGo5DcAtnyPkYI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoyMCwiZnVsbG5hbWUiOiJNb2ggQmFocnVsIFVsdW0iLCJ1c2VybmFtZSI6ImJhaHJ1bHVsbSIsImVtYWlsIjoiYmVsYWphcmtvZGluZzk3QGdtYWlsLmNvbSIsInBob25lIjoiKzYyODk1MTYyOTUwNzkiLCJpYXQiOjE2ODU0NTM1MjEsImV4cCI6MTY4NTQ1MzU1MX0.wLCIFXzhkw7hTiKuBvB18EirSihZ4UYb7KkG5HgAIVc
 
 
 ###
@@ -59,8 +59,8 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email" : "zulnurdian4@gmail.com",
-  "password" : "123"
+  "email" : "belajarkoding97@gmail.com",
+  "password" : "11111111"
 }
 
 ###

@@ -71,7 +71,7 @@ async function postLoginHandler(req, res) {
       error: false,
       msg: "Login success",
       loginResult: {
-        userId: response.id,
+        userId: response.user_id,
         name: response.fullname,
         token: accessToken,
       },

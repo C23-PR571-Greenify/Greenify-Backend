@@ -86,7 +86,8 @@ async function postLoginHandler(req, res) {
 // TODO USER LOGOUT
 async function getLogoutHandler(req, res) {
   const refreshToken = req.cookies.refreshToken;
-  if (!refreshToken) return res.status(403).json({ msg: "Please login first" });
+  if (!refreshToken)
+    return res.status(403).json({ error: true, msg: "Please login first" });
   try {
     const singleUser = await User.findOne({
       where: {
@@ -105,7 +106,7 @@ async function getLogoutHandler(req, res) {
 
     res.clearCookie("refreshToken");
 
-    res.status(200).json({ msg: "Logout Success" });
+    res.status(200).json({ error: false, msg: "Logout Success" });
   } catch (error) {
     console.log(error.message);
   }

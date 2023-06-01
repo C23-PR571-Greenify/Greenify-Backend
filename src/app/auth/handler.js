@@ -94,7 +94,8 @@ async function getLogoutHandler(req, res) {
         refresh_token: refreshToken,
       },
     });
-    if (!singleUser) return res.status(403).json({ msg: "User not found" });
+    if (!singleUser)
+      return res.status(403).json({ error: true, msg: "User not found" });
     await User.update(
       { refresh_token: null },
       {
@@ -123,14 +124,15 @@ async function generateAccessTokenHandler(req, res) {
 
     const refreshToken = req.cookies.refreshToken;
     if (!refreshToken)
-      return res.status(403).json({ msg: "Please login first" });
+      return res.status(403).json({ error: true, msg: "Please login first" });
 
     const singleUser = await User.findOne({
       where: {
         refresh_token: refreshToken,
       },
     });
-    if (!singleUser) return res.status(404).json({ msg: "User not found" });
+    if (!singleUser)
+      return res.status(404).json({ error: true, msg: "User not found" });
 
     const payloadUser = {
       user_id: singleUser.user_id,
@@ -146,7 +148,7 @@ async function generateAccessTokenHandler(req, res) {
         expiresIn: accessExpiresIn,
       });
 
-      res.json({ accessToken });
+      res.json({ error: false, accessToken: accessToken });
     });
   } catch (error) {
     console.log(error.message);
@@ -187,7 +189,7 @@ async function sendOTPVerificationEmail({ id, email }, res) {
     });
   } catch (error) {
     res.json({
-      status: "FAILED",
+      error: true,
       msg: error.message,
     });
   }
@@ -242,6 +244,7 @@ async function verifyOTP(req, res) {
               },
             });
             res.json({
+              error: false,
               status: "VERIFIED",
               msg: "User email has been verified",
             });

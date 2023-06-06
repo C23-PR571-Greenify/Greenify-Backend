@@ -1,9 +1,10 @@
 const { Category } = require("../../models");
+const { respone } = require("../../utils/response");
 
 async function getAllCategoriesHandler(req, res, next) {
   try {
     const categories = await Category.findAll();
-    res.json(categories);
+    res.json(respone("Berhasil mendapatkan semua kategori", categories));
   } catch (err) {
     next(err);
   }
@@ -13,7 +14,7 @@ async function createCategory(req, res, next) {
   const { name, desc } = req.body;
   try {
     const categories = await Category.create({ name, description: desc });
-    res.status(201).json(categories);
+    res.status(201).json(respone("Berhasil menambahkan kategori", categories));
   } catch (error) {
     next(error);
   }
@@ -32,7 +33,7 @@ async function deleteCategory(req, res, next) {
         .status(404)
         .json({ msg: `Category with id : ${id} not found` });
     }
-    res.status(200).json({ msg: `Category with id : ${id} has beed deleted` });
+    res.status(200).json(respone(`Category with id : ${id} deleted`));
   } catch (error) {
     next(error);
   }
@@ -55,7 +56,7 @@ async function updateCategory(req, res, next) {
       }
     );
 
-    return res.status(200).json({ msg: `Category with id : ${id} updated` });
+    res.status(200).json(respone(`Category with id : ${id} updated`));
   } catch (error) {
     next(error);
   }

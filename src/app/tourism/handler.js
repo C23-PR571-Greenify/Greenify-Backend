@@ -1,9 +1,12 @@
-const { Tourism } = require("../../models");
+const { Tourism, Categories } = require("../../models");
+const { respone } = require("../../utils/response");
 
 async function getAllTourismHandler(req, res, next) {
   try {
     const tourisms = await Tourism.findAll();
-    res.status(200).json({ data: tourisms });
+    res
+      .status(200)
+      .json(respone("Berhasil mendapatkan semua tourism", tourisms));
   } catch (error) {
     next(error);
   }
@@ -13,10 +16,11 @@ async function getSingleTourismHandler(req, res, next) {
   try {
     const tourism = await Tourism.findOne({
       where: {
-        tourism_id: req.params.id,
+        id: req.params.id,
       },
+      include: Categories,
     });
-    res.status(200).json({ data: tourism });
+    res.status(200).json(respone("Berhasil mendapatkan tourism", tourism));
   } catch (error) {
     next(error);
   }
@@ -34,7 +38,7 @@ async function createTourismHandler(req, res, next) {
       lat: req.body.lat,
       lng: req.body.lng,
     });
-    res.status(201).json({ data: tourism });
+    res.status(201).json(respone("Berhasil menambahkan tourism", tourism));
   } catch (error) {
     next(error);
   }
@@ -47,7 +51,7 @@ async function updateTourismHandler(req, res, next) {
         tourism_id: req.params.id,
       },
     });
-    res.status(201).json({ data: tourism });
+    res.status(201).json(respone("Berhasil mengubah tourism", tourism));
   } catch (error) {
     next(error);
   }
@@ -60,7 +64,7 @@ async function deleteTourismHandler(req, res, next) {
         tourism_id: req.params.id,
       },
     });
-    res.status(201).json({ data: tourism });
+    res.status(201).json(respone("Berhasil menghapus tourism", tourism));
   } catch (error) {
     next(error);
   }

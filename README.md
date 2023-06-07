@@ -75,7 +75,7 @@ Follow this step to run this repostory code in your local device:
   ``` sh
   docker build -t greenify-backend .
   ``` 
-  8. Run the docker image
+  5. Run the docker image
   ```sh
   docker run -p 8080:8080 greenify-backend
   ```

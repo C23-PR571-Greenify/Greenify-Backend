@@ -2,11 +2,6 @@
 
 const categories = [
   {
-    name: "Taman Hiburan",
-    description:
-      "Tempat rekreasi yang menyediakan hiburan dan aktivitas bagi pengunjung.",
-  },
-  {
     name: "Budaya",
     description:
       "Warisan dan praktik yang diwariskan dari generasi ke generasi.",
@@ -20,11 +15,6 @@ const categories = [
     name: "Bahari",
     description:
       "Segala sesuatu yang terkait dengan laut dan kehidupan di dalamnya.",
-  },
-  {
-    name: "Tempat Ibadah",
-    description:
-      "Lokasi yang digunakan untuk melaksanakan ibadah dan aktivitas keagamaan.",
   },
 ];
 

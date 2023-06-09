@@ -87,6 +87,8 @@ async function predictTourismHandler(req, res, next) {
       averageRatings.push(averageRating);
     }
 
+    // console.log(averageRatings);
+
     const body = {
       user_feature: [averageRatings],
       tempat_feature: tourism.map((item) => [

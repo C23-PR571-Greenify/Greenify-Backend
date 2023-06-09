@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="https://github.com/C23-PR571-Greenify/Greenify-Documentation/blob/main/logo.png" alt="logo" width="200" height="auto" />
+  <img src="https://github.com/C23-PR571-Greenify/Greenify-Documentation/blob/main/logo.png" alt="logo" width="350" height="auto" />
   <h1>Greenify Backend</h1>
   
   <p>
@@ -8,6 +8,13 @@
   </p>
 
 </div>
+
+
+
+
+
+
+
 
 <!-- Getting Started -->
 ## 	:toolbox: Getting Started
@@ -26,6 +33,15 @@ This project uses NPM as package manager
 * Google Cloud Platform Account (If You want to to deploy it in GCP)
   
   _Note: We already deploy our API on Cloud RUN, and for cloud run we are setting to maximun 2 instances, this for saving GCP money, and for databases we use CloudSQL to store our data_
+  
+  <!-- Architecture -->
+
+<div align="center">
+
+  <img src="https://github.com/C23-PR571-Greenify/Greenify-Documentation/blob/main/Greenify%20architecture.png" alt="logo" width="800" height="auto" />
+ 
+
+</div>
 
   <!-- Installation -->
 ### :running: Run Locally With NPM

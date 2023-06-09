@@ -76,11 +76,19 @@ async function deleteTourismHandler(req, res, next) {
 async function predictTourismHandler(req, res, next) {
   try {
     const tourism = await Tourism.findAll();
+    const categories = await Category.findAll({
+      attributes: ["average_rating"],
+    });
 
-    const rating = req.body.rating;
+    const averageRatings = [];
+
+    for (const category of categories) {
+      const averageRating = category.average_rating;
+      averageRatings.push(averageRating);
+    }
 
     const body = {
-      user_feature: [rating],
+      user_feature: [averageRatings],
       tempat_feature: tourism.map((item) => [
         item.rating,
         item.price,
@@ -107,16 +115,19 @@ async function predictTourismHandler(req, res, next) {
 
 async function giveRatingTourism(req, res) {
   const { user_id, tourism_id, rating } = req.body;
-  const categoriesData = [
-    { id: 1, name: "Budaya" },
-    { id: 2, name: "Cagar Alam" },
-    { id: 3, name: "Bahari" },
-  ];
+  const categoriesData = await Category.findAll();
+  const singleTourism = await Tourism.findOne({
+    attributes: ["id", "category_id", "place_name"],
+    where: {
+      id: tourism_id,
+    },
+  });
+
   try {
-    const ratings = await users_rating.create({
+    await users_rating.create({
       user_id: user_id,
       tourism_id: tourism_id,
-      rating: rating,
+      rating: rating ? rating : 0.0,
     });
 
     for (const category of categoriesData) {
@@ -141,16 +152,17 @@ async function giveRatingTourism(req, res) {
 
       const averageRating = result.average_rating;
 
-      console.log("HASIL AVERAGE NYA : ", averageRating);
-      console.log("CATEGORY ID NYA : ", categoryId);
-
       await Category.update(
-        { average_rating: averageRating },
+        { average_rating: averageRating ? averageRating : 0.0 },
         { where: { id: categoryId } }
       );
     }
 
-    res.status(201).json(respone("Berhasil menambahkan ratings", ratings));
+    res.status(201).json({
+      error: false,
+      msg: "Berhasil menambahkan rating",
+      tourism: singleTourism,
+    });
   } catch (error) {
     console.log(error.message);
   }

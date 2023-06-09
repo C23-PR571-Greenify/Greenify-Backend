@@ -22,7 +22,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Tourism",
+          model: "tourism",
           key: "id",
         },
       },

@@ -1,7 +1,8 @@
 const { default: axios } = require("axios");
-const { Tourism, Categories } = require("../../models");
+const { Tourism, Categories, Category, users_rating } = require("../../models");
 const { respone } = require("../../utils/response");
 const fs = require("fs");
+const sequelize = require("sequelize");
 
 async function getAllTourismHandler(req, res, next) {
   try {
@@ -104,6 +105,57 @@ async function predictTourismHandler(req, res, next) {
   }
 }
 
+async function giveRatingTourism(req, res) {
+  const { user_id, tourism_id, rating } = req.body;
+  const categoriesData = [
+    { id: 1, name: "Budaya" },
+    { id: 2, name: "Cagar Alam" },
+    { id: 3, name: "Bahari" },
+  ];
+  try {
+    const ratings = await users_rating.create({
+      user_id: user_id,
+      tourism_id: tourism_id,
+      rating: rating,
+    });
+
+    for (const category of categoriesData) {
+      const categoryId = category.id;
+
+      const wisata = await Tourism.findAll({
+        where: {
+          category_id: categoryId,
+        },
+        attributes: ["id"],
+        raw: true,
+      });
+
+      const tourismId = wisata.map((item) => item.id);
+      const result = await users_rating.findOne({
+        attributes: [
+          [sequelize.fn("AVG", sequelize.col("rating")), "average_rating"],
+        ],
+        where: { tourism_id: tourismId },
+        raw: true,
+      });
+
+      const averageRating = result.average_rating;
+
+      console.log("HASIL AVERAGE NYA : ", averageRating);
+      console.log("CATEGORY ID NYA : ", categoryId);
+
+      await Category.update(
+        { average_rating: averageRating },
+        { where: { id: categoryId } }
+      );
+    }
+
+    res.status(201).json(respone("Berhasil menambahkan ratings", ratings));
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
 module.exports = {
   getAllTourismHandler,
   getSingleTourismHandler,
@@ -111,4 +163,5 @@ module.exports = {
   updateTourismHandler,
   deleteTourismHandler,
   predictTourismHandler,
+  giveRatingTourism,
 };

@@ -5,6 +5,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate() {
       // define association here
       User.hasMany(sequelize.models.otpToken, { foreignKey: "user_id" });
+      User.hasMany(sequelize.models.users_rating, { foreignKey: "user_id" });
     }
   }
 

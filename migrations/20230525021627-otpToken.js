@@ -12,6 +12,10 @@ module.exports = {
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: "Users",
+          key: "user_id",
+        },
       },
       otp: {
         type: Sequelize.STRING,

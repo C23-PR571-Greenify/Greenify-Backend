@@ -1,23 +1,32 @@
 "use strict";
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Categories", {
+    await queryInterface.createTable("users_ratings", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
-        type: Sequelize.STRING,
-        unique: true,
+      user_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Users",
+          key: "user_id",
+        },
       },
-      description: {
-        type: Sequelize.STRING,
-        allowNull: true,
+      tourism_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "tourism",
+          key: "id",
+        },
       },
-      average_rating: {
+      rating: {
         type: Sequelize.FLOAT,
         allowNull: true,
       },
@@ -31,7 +40,8 @@ module.exports = {
       },
     });
   },
+
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Categories");
+    await queryInterface.dropTable("users_ratings");
   },
 };

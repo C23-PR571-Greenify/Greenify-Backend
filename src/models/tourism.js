@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
       Tourism.hasMany(models.tourism_image, {
         foreignKey: "tourism_id",
       });
+      Tourism.hasMany(models.users_rating, { foreignKey: "tourism_id" });
     }
   }
   Tourism.init(

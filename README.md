@@ -3,9 +3,6 @@
   <img src="https://github.com/C23-PR571-Greenify/Greenify-Documentation/blob/main/logo.png" alt="logo" width="350" height="auto" />
   <h1>Greenify Backend</h1>
   
-  <p>
-    Backend For Bangkit 2023 Final Capstone Project  
-  </p>
 
 </div>
 
@@ -24,7 +21,7 @@
 
 This project uses NPM as package manager
 
-* Install node.js version 14.21.3 <a href="https://nodejs.org/en/blog/release/v14.21.3">*here*<a/> <br />
+* Install node.js version 16.13.1 <a href="https://nodejs.org/en/blog/release/v16.13.1">*here*<a/> <br />
   Make sure your node.js and npm already install in your device using, open cmd and run:
   ```bash
   node -v
@@ -38,7 +35,7 @@ This project uses NPM as package manager
 
 <div align="center">
 
-  <img src="https://github.com/C23-PR571-Greenify/Greenify-Documentation/blob/main/Greenify%20architecture.png" alt="logo" width="800" height="auto" />
+  <img src="https://github.com/C23-PR571-Greenify/Greenify-Documentation/blob/main/Greenify%20architecture.png" alt="architecture" width="800" height="auto" />
  
 
 </div>
@@ -109,9 +106,9 @@ To deploy this project we are using cloud run at GCP (you can use another servic
   ```bash
   docker run -p 8080:8080 IMAGE-NAME
   ```
- 3. Make a <a href="https://cloud.google.com/artifact-registry/docs/repositories/create-repos">repostory at artifact registery</a>
- 4. Push the <a href="https://cloud.google.com/artifact-registry/docs/docker/pushing-and-pulling">Docker image to a artifact registery</a>
-  5. Create a <a href="https://cloud.google.com/run/docs/deploying">cloud run service </a> and use your image at artifac registery repostory
+ 3. Make a <a href="https://cloud.google.com/artifact-registry/docs/repositories/create-repos">repository at artifact registry</a>
+ 4. Push the <a href="https://cloud.google.com/artifact-registry/docs/docker/pushing-and-pulling">Docker image to a artifact registry</a>
+  5. Create a <a href="https://cloud.google.com/run/docs/deploying">cloud run service </a> and use your image at artifact registry repository
   6. Check your deployed API Link
   
 <!-- Usage -->
@@ -121,8 +118,13 @@ To deploy this project we are using cloud run at GCP (you can use another servic
 <!-- TechStack -->
 ### :space_invader: Tech Stack
   <h4>BackEnd:</h4>
+  <img src="https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white" />
   <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" />
   <img src="https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white" />
+  <img src="https://img.shields.io/badge/flask-%23000.svg?style=for-the-badge&logo=flask&logoColor=white" />
+  
+  <h4>Database:</h4>
+  <img src="https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white" />
 
 <h4>Cloud:</h4>
   <img src="https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white" />
@@ -130,5 +132,7 @@ To deploy this project we are using cloud run at GCP (you can use another servic
 <h4>Tools:</h4>
   <img src="https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white" />
   <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" />
+  <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white" />
+  <img src="https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white" />
 
 

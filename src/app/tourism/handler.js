@@ -1,11 +1,23 @@
 const { default: axios } = require("axios");
-const { Tourism, Categories } = require("../../models");
+const { Tourism, Categories, tourism_image } = require("../../models");
+const models = require("../../models");
 const { respone } = require("../../utils/response");
 const fs = require("fs");
+const { storageService } = require("../../utils/storageService");
+const { Model } = require("sequelize");
 
 async function getAllTourismHandler(req, res, next) {
   try {
-    const tourisms = await Tourism.findAll();
+    const tourisms = await Tourism.findAll({
+      include: [
+        {
+          model: models.Category,
+        },
+        {
+          model: models.tourism_image,
+        },
+      ],
+    });
     res
       .status(200)
       .json(respone("Berhasil mendapatkan semua tourism", tourisms));
@@ -20,7 +32,14 @@ async function getSingleTourismHandler(req, res, next) {
       where: {
         id: req.params.id,
       },
-      include: Categories,
+      include: [
+        {
+          model: models.Category,
+        },
+        {
+          model: models.tourism_image,
+        },
+      ],
     });
     res.status(200).json(respone("Berhasil mendapatkan tourism", tourism));
   } catch (error) {
@@ -104,6 +123,25 @@ async function predictTourismHandler(req, res, next) {
   }
 }
 
+async function uploadImageHandler(req, res, next) {
+  try {
+    const images = req.files;
+
+    for (let i = 0; i < images.length; i++) {
+      const image = images[i];
+      const url = await storageService.store(image, "tourism/");
+      await tourism_image.create({
+        tourism_id: req.params.id,
+        image_url: url,
+      });
+    }
+
+    res.status(200).json(respone("Berhasil upload image"));
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   getAllTourismHandler,
   getSingleTourismHandler,
@@ -111,4 +149,5 @@ module.exports = {
   updateTourismHandler,
   deleteTourismHandler,
   predictTourismHandler,
+  uploadImageHandler,
 };

@@ -5,6 +5,9 @@ module.exports = (sequelize, DataTypes) => {
   class Tourism extends Model {
     static associate(models) {
       Tourism.belongsTo(models.Category, { foreignKey: "category_id" });
+      Tourism.hasMany(models.tourism_image, {
+        foreignKey: "tourism_id",
+      });
     }
   }
   Tourism.init(

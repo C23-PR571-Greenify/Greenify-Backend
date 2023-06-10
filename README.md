@@ -24,7 +24,7 @@
 
 This project uses NPM as package manager
 
-* Install node.js version 14.21.3 <a href="https://nodejs.org/en/blog/release/v14.21.3">*here*<a/> <br />
+* Install node.js version 16.13.1 <a href="https://nodejs.org/en/blog/release/v16.13.1">*here*<a/> <br />
   Make sure your node.js and npm already install in your device using, open cmd and run:
   ```bash
   node -v

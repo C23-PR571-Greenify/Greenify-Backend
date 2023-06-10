@@ -38,7 +38,7 @@ This project uses NPM as package manager
 
 <div align="center">
 
-  <img src="https://github.com/C23-PR571-Greenify/Greenify-Documentation/blob/main/Greenify%20architecture.png" alt="logo" width="800" height="auto" />
+  <img src="https://github.com/C23-PR571-Greenify/Greenify-Documentation/blob/main/Greenify%20architecture.png" alt="architecture" width="800" height="auto" />
  
 
 </div>

@@ -109,9 +109,9 @@ To deploy this project we are using cloud run at GCP (you can use another servic
   ```bash
   docker run -p 8080:8080 IMAGE-NAME
   ```
- 3. Make a <a href="https://cloud.google.com/artifact-registry/docs/repositories/create-repos">repostory at artifact registery</a>
- 4. Push the <a href="https://cloud.google.com/artifact-registry/docs/docker/pushing-and-pulling">Docker image to a artifact registery</a>
-  5. Create a <a href="https://cloud.google.com/run/docs/deploying">cloud run service </a> and use your image at artifac registery repostory
+ 3. Make a <a href="https://cloud.google.com/artifact-registry/docs/repositories/create-repos">repository at artifact registry</a>
+ 4. Push the <a href="https://cloud.google.com/artifact-registry/docs/docker/pushing-and-pulling">Docker image to a artifact registry</a>
+  5. Create a <a href="https://cloud.google.com/run/docs/deploying">cloud run service </a> and use your image at artifact registry repository
   6. Check your deployed API Link
   
 <!-- Usage -->

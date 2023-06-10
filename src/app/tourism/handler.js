@@ -9,7 +9,6 @@ const {
 const models = require("../../models");
 const { respone } = require("../../utils/response");
 const { storageService } = require("../../utils/storageService");
-const { respone } = require("../../utils/response");
 const sequelize = require("sequelize");
 
 async function getAllTourismHandler(req, res, next) {

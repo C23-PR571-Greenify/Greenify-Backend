@@ -3,9 +3,6 @@
   <img src="https://github.com/C23-PR571-Greenify/Greenify-Documentation/blob/main/logo.png" alt="logo" width="350" height="auto" />
   <h1>Greenify Backend</h1>
   
-  <p>
-    Backend For Bangkit 2023 Final Capstone Project  
-  </p>
 
 </div>
 

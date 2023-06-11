@@ -17,9 +17,11 @@ async function getAllTourismHandler(req, res, next) {
       include: [
         {
           model: models.Category,
+          attributes: ["id", "name", "description", "average_rating"],
         },
         {
           model: models.tourism_image,
+          attributes: ["id", "image_url", "tourism_id"],
         },
       ],
     });
@@ -110,8 +112,6 @@ async function predictTourismHandler(req, res, next) {
       averageRatings.push(averageRating);
     }
 
-    // console.log(averageRatings);
-
     const body = {
       user_feature: [averageRatings],
       tempat_feature: tourism.map((item) => [
@@ -128,11 +128,40 @@ async function predictTourismHandler(req, res, next) {
       body
     );
 
-    const resultTourism = recommendation.data.map((item) => tourism[item]);
+    const recommendedIndexes = recommendation.data;
+    const tourismIds = recommendedIndexes.map((index) => tourism[index].id);
+    const imageUrls = await tourism_image.findAll({
+      where: { tourism_id: tourismIds },
+      attributes: ["tourism_id", "image_url"],
+      raw: true,
+    });
 
-    res
-      .status(200)
-      .json(respone("Berhasil mendapatkan rekomendasi", resultTourism));
+    const imageUrlsMap = imageUrls.reduce((map, image) => {
+      if (!map[image.tourism_id]) {
+        map[image.tourism_id] = [];
+      }
+      map[image.tourism_id].push({ image_url: image.image_url });
+      return map;
+    }, {});
+
+    const resultTourism = recommendedIndexes.map((index) => {
+      const tourismData = tourism[index];
+      const imageUrls = imageUrlsMap[tourismData.id] || [];
+      return { ...tourismData.dataValues, tourism_images: imageUrls };
+    });
+
+    const cleanedResult = resultTourism.map((data) => {
+      const {
+        uniqno,
+        _previousDataValues,
+        _changed,
+        _options,
+        isNewRecord,
+        ...cleanedData
+      } = data;
+      return { ...cleanedData, image_url: data.image_url };
+    });
+    res.status(200).json(respone("Rekomendasi berhasil dimuat", cleanedResult));
   } catch (error) {
     next(error);
   }

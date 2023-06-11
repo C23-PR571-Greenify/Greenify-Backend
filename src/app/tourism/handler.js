@@ -213,6 +213,17 @@ async function uploadImageHandler(req, res, next) {
 
 async function giveRatingTourism(req, res) {
   const { user_id, tourism_id, rating } = req.body;
+  // Check if the user has already rated the tourism
+  const existingRating = await users_rating.findOne({
+    where: { user_id: user_id, tourism_id: tourism_id },
+  });
+
+  if (existingRating) {
+    return res.status(400).json({
+      error: true,
+      msg: "Anda sudah memberikan rating untuk tempat wisata ini.",
+    });
+  }
   const categoriesData = await Category.findAll();
   const singleTourism = await Tourism.findOne({
     attributes: ["id", "category_id", "place_name"],

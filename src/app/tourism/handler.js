@@ -222,11 +222,42 @@ async function giveRatingTourism(req, res) {
   });
 
   try {
-    await users_rating.create({
-      user_id: user_id,
-      tourism_id: tourism_id,
-      rating: rating ? rating : 0.0,
+    const existingRating = await users_rating.findOne({
+      where: {
+        user_id: user_id,
+        tourism_id: tourism_id,
+      },
     });
+
+    if (existingRating) {
+      await users_rating.update(
+        { rating: rating ? rating : 0.0 },
+        {
+          where: {
+            user_id: user_id,
+            tourism_id: tourism_id,
+          },
+        }
+      );
+
+      res.status(201).json({
+        error: false,
+        msg: "Berhasil update rating",
+        tourism: singleTourism,
+      });
+    } else {
+      await users_rating.create({
+        user_id: user_id,
+        tourism_id: tourism_id,
+        rating: rating ? rating : 0.0,
+      });
+
+      res.status(201).json({
+        error: false,
+        msg: "Berhasil menambahkan rating",
+        tourism: singleTourism,
+      });
+    }
 
     for (const category of categoriesData) {
       const categoryId = category.id;
@@ -255,12 +286,6 @@ async function giveRatingTourism(req, res) {
         { where: { id: categoryId } }
       );
     }
-
-    res.status(201).json({
-      error: false,
-      msg: "Berhasil menambahkan rating",
-      tourism: singleTourism,
-    });
   } catch (error) {
     console.log(error.message);
   }

@@ -13,7 +13,10 @@ const sequelize = require("sequelize");
 
 async function getAllTourismHandler(req, res, next) {
   try {
-    const tourisms = await Tourism.findAll({
+    const { page = 1, limit = 10 } = req.query;
+    const offset = (page - 1) * limit;
+
+    const { count, rows: tourisms } = await Tourism.findAndCountAll({
       include: [
         {
           model: models.Category,
@@ -24,10 +27,23 @@ async function getAllTourismHandler(req, res, next) {
           attributes: ["id", "image_url", "tourism_id"],
         },
       ],
+      offset,
+      limit: parseInt(limit),
     });
-    res
-      .status(200)
-      .json(respone("Berhasil mendapatkan semua tourism", tourisms));
+
+    const totalPages = Math.ceil(count / limit);
+    const response = {
+      message: "Berhasil mendapatkan semua tourism",
+      data: tourisms,
+      pagination: {
+        totalItems: count,
+        totalPages,
+        currentPage: parseInt(page),
+        itemsPerPage: parseInt(limit),
+      },
+    };
+
+    res.status(200).json(response);
   } catch (error) {
     next(error);
   }
@@ -100,7 +116,16 @@ async function deleteTourismHandler(req, res, next) {
 
 async function predictTourismHandler(req, res, next) {
   try {
-    const tourism = await Tourism.findAll();
+    let page = parseInt(req.query.page) || 1;
+    let limit = parseInt(req.query.limit) || 10;
+
+    const offset = (page - 1) * limit;
+
+    const tourism = await Tourism.findAll({
+      offset: offset,
+      limit: limit,
+    });
+
     const categories = await Category.findAll({
       attributes: ["average_rating"],
     });

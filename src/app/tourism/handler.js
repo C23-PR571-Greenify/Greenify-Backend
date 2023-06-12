@@ -7,9 +7,10 @@ const {
   users_rating,
 } = require("../../models");
 const models = require("../../models");
-const { respone } = require("../../utils/response");
+const { respone, errorRespone } = require("../../utils/response");
 const { storageService } = require("../../utils/storageService");
 const sequelize = require("sequelize");
+const calculateDistance = require("./haversineAlgorithm");
 
 async function getAllTourismHandler(req, res, next) {
   try {
@@ -114,28 +115,155 @@ async function deleteTourismHandler(req, res, next) {
   }
 }
 
+async function uploadImageHandler(req, res, next) {
+  try {
+    const images = req.files;
+
+    for (let i = 0; i < images.length; i++) {
+      const image = images[i];
+      const url = await storageService.store(image, "tourism/");
+      await tourism_image.create({
+        tourism_id: req.params.id,
+        image_url: url,
+      });
+    }
+
+    res.status(200).json(respone("Berhasil upload image"));
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function giveRatingTourism(req, res) {
+  const { user_id, tourism_id, rating } = req.body;
+
+  if (!user_id || !tourism_id)
+    return res
+      .status(500)
+      .json(errorRespone("Credential user_id or tourism_id  must be filled"));
+
+  if (!rating)
+    return res
+      .status(400)
+      .json(errorRespone("Ratting must be filled between 1-5"));
+
+  const categoriesData = await Category.findAll();
+  const singleTourism = await Tourism.findOne({
+    attributes: ["id", "category_id", "place_name"],
+    where: {
+      id: tourism_id,
+    },
+  });
+
+  try {
+    const existingRating = await users_rating.findOne({
+      where: {
+        user_id: user_id,
+        tourism_id: tourism_id,
+      },
+    });
+
+    if (existingRating) {
+      await users_rating.update(
+        { rating: rating ? rating : 0.0 },
+        {
+          where: {
+            user_id: user_id,
+            tourism_id: tourism_id,
+          },
+        }
+      );
+
+      res
+        .status(201)
+        .json(respone("Rating successfully updated", singleTourism));
+    } else {
+      await users_rating.create({
+        user_id: user_id,
+        tourism_id: tourism_id,
+        rating: rating ? rating : 0.0,
+      });
+
+      res.status(201).json(respone("Rating successfully added", singleTourism));
+    }
+
+    for (const category of categoriesData) {
+      const categoryId = category.id;
+
+      const wisata = await Tourism.findAll({
+        where: {
+          category_id: categoryId,
+        },
+        attributes: ["id"],
+        raw: true,
+      });
+
+      const tourismId = wisata.map((item) => item.id);
+      const result = await users_rating.findOne({
+        attributes: [
+          [sequelize.fn("AVG", sequelize.col("rating")), "average_rating"],
+        ],
+        where: { tourism_id: tourismId },
+        raw: true,
+      });
+
+      const averageRating = result.average_rating;
+
+      await Category.update(
+        { average_rating: averageRating ? averageRating : 0.0 },
+        { where: { id: categoryId } }
+      );
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
 async function predictTourismHandler(req, res, next) {
   try {
     let page = parseInt(req.query.page) || 1;
-    let limit = parseInt(req.query.limit) || 10;
-
+    let limit = parseInt(req.query.limit) || 25;
+    let lat = parseFloat(req.body.lat);
+    let lng = parseFloat(req.body.lng);
     const offset = (page - 1) * limit;
+    const dinstanceOrigin = 300; // in KM
 
-    const tourism = await Tourism.findAll({
-      offset: offset,
-      limit: limit,
+    if (isNaN(lat) || isNaN(lng)) {
+      return res
+        .status(400)
+        .json(errorRespone("Invalid latitude or longitude"));
+    }
+
+    const allTourism = await Tourism.findAll();
+
+    const filteredTourism = allTourism.filter((item) => {
+      const distance = calculateDistance(lat, lng, item.lat, item.lng);
+      return distance <= dinstanceOrigin; //  jarak max
     });
+
+    if (filteredTourism.length === 0) {
+      return res.status(404).json({
+        message: `There are no tourist attractions within a ${dinstanceOrigin} km distance from your location.`,
+      });
+    }
+
+    // Urutkan berdasarkan jarak terdekat
+    const sortedTourism = filteredTourism.sort((a, b) => {
+      const distanceA = calculateDistance(lat, lng, a.lat, a.lng);
+      const distanceB = calculateDistance(lat, lng, b.lat, b.lng);
+      return distanceA - distanceB;
+    });
+
+    // Ambil data sesuai dengan limit dan offset
+    const tourism = sortedTourism.slice(offset, offset + limit);
 
     const categories = await Category.findAll({
       attributes: ["average_rating"],
     });
 
-    const averageRatings = [];
-
-    for (const category of categories) {
-      const averageRating = category.average_rating;
-      averageRatings.push(averageRating);
-    }
+    const averageRatings = categories.map(
+      (category) => category.dataValues.average_rating
+    );
 
     const body = {
       user_feature: [averageRatings],
@@ -186,108 +314,17 @@ async function predictTourismHandler(req, res, next) {
       } = data;
       return { ...cleanedData, image_url: data.image_url };
     });
-    res.status(200).json(respone("Rekomendasi berhasil dimuat", cleanedResult));
+
+    res
+      .status(200)
+      .json(
+        respone(
+          `Recommendations successfully loaded. Here is a list of eco-friendly tourist attractions within a ${dinstanceOrigin} km radius from your location.`,
+          cleanedResult
+        )
+      );
   } catch (error) {
     next(error);
-  }
-}
-
-async function uploadImageHandler(req, res, next) {
-  try {
-    const images = req.files;
-
-    for (let i = 0; i < images.length; i++) {
-      const image = images[i];
-      const url = await storageService.store(image, "tourism/");
-      await tourism_image.create({
-        tourism_id: req.params.id,
-        image_url: url,
-      });
-    }
-
-    res.status(200).json(respone("Berhasil upload image"));
-  } catch (error) {
-    next(error);
-  }
-}
-
-async function giveRatingTourism(req, res) {
-  const { user_id, tourism_id, rating } = req.body;
-  const categoriesData = await Category.findAll();
-  const singleTourism = await Tourism.findOne({
-    attributes: ["id", "category_id", "place_name"],
-    where: {
-      id: tourism_id,
-    },
-  });
-
-  try {
-    const existingRating = await users_rating.findOne({
-      where: {
-        user_id: user_id,
-        tourism_id: tourism_id,
-      },
-    });
-
-    if (existingRating) {
-      await users_rating.update(
-        { rating: rating ? rating : 0.0 },
-        {
-          where: {
-            user_id: user_id,
-            tourism_id: tourism_id,
-          },
-        }
-      );
-
-      res.status(201).json({
-        error: false,
-        msg: "Berhasil update rating",
-        tourism: singleTourism,
-      });
-    } else {
-      await users_rating.create({
-        user_id: user_id,
-        tourism_id: tourism_id,
-        rating: rating ? rating : 0.0,
-      });
-
-      res.status(201).json({
-        error: false,
-        msg: "Berhasil menambahkan rating",
-        tourism: singleTourism,
-      });
-    }
-
-    for (const category of categoriesData) {
-      const categoryId = category.id;
-
-      const wisata = await Tourism.findAll({
-        where: {
-          category_id: categoryId,
-        },
-        attributes: ["id"],
-        raw: true,
-      });
-
-      const tourismId = wisata.map((item) => item.id);
-      const result = await users_rating.findOne({
-        attributes: [
-          [sequelize.fn("AVG", sequelize.col("rating")), "average_rating"],
-        ],
-        where: { tourism_id: tourismId },
-        raw: true,
-      });
-
-      const averageRating = result.average_rating;
-
-      await Category.update(
-        { average_rating: averageRating ? averageRating : 0.0 },
-        { where: { id: categoryId } }
-      );
-    }
-  } catch (error) {
-    console.log(error.message);
   }
 }
 

@@ -254,6 +254,9 @@ async function predictTourismHandler(req, res, next) {
       return distanceA - distanceB;
     });
 
+    const totalItems = sortedTourism.length;
+    const totalPages = Math.ceil(totalItems / limit);
+
     // Ambil data sesuai dengan limit dan offset
     const tourism = sortedTourism.slice(offset, offset + limit);
 
@@ -315,14 +318,20 @@ async function predictTourismHandler(req, res, next) {
       return { ...cleanedData, image_url: data.image_url };
     });
 
-    res
-      .status(200)
-      .json(
-        respone(
-          `Recommendations successfully loaded. Here is a list of eco-friendly tourist attractions within a ${dinstanceOrigin} km radius from your location.`,
-          cleanedResult
-        )
-      );
+    res.status(200).json(
+      respone(
+        `Recommendations successfully loaded. Here is a list of eco-friendly tourist attractions within a ${dinstanceOrigin} km radius from your location.`,
+        {
+          cleanedResult,
+          pagination: {
+            totalItems: totalItems,
+            totalPages: totalPages,
+            currentPage: page,
+            itemsPerPage: limit,
+          },
+        }
+      )
+    );
   } catch (error) {
     next(error);
   }

@@ -34,7 +34,8 @@ async function getAllTourismHandler(req, res, next) {
 
     const totalPages = Math.ceil(count / limit);
     const response = {
-      message: "Berhasil mendapatkan semua tourism",
+      error: false,
+      message: "Successful get all Tourism",
       data: tourisms,
       pagination: {
         totalItems: count,
@@ -242,9 +243,13 @@ async function predictTourismHandler(req, res, next) {
     });
 
     if (filteredTourism.length === 0) {
-      return res.status(404).json({
-        message: `There are no tourist attractions within a ${dinstanceOrigin} km distance from your location.`,
-      });
+      return res
+        .status(404)
+        .json(
+          errorRespone(
+            `There are no tourist attractions within a ${dinstanceOrigin} km distance from your location.`
+          )
+        );
     }
 
     // Urutkan berdasarkan jarak terdekat

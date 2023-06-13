@@ -7,7 +7,7 @@ const authors = [
     path: "Machine Learning",
     linkedIn: "https://www.linkedin.com/in/windaasmarawati/",
     github: "https://github.com/windaasm",
-    profile_url: "test",
+    profile_url: "1",
   },
   {
     fullname: "Grace Cynthia",
@@ -15,7 +15,7 @@ const authors = [
     path: "Machine Learning",
     linkedIn: "https://www.linkedin.com/in/gracecynthia9850/",
     github: "https://github.com/graceecyn",
-    profile_url: "test",
+    profile_url: "2",
   },
   {
     fullname: "Judah Ariesaka Magaini",
@@ -23,7 +23,7 @@ const authors = [
     path: "Machine Learning",
     linkedIn: "https://www.linkedin.com/in/judah-ariesaka/",
     github: "https://github.com/ariiesaka",
-    profile_url: "test",
+    profile_url: "3",
   },
   {
     fullname: "Moh. Bahrul Ulum",
@@ -31,7 +31,7 @@ const authors = [
     path: "Mobile Development",
     linkedIn: "https://www.linkedin.com/in/moh-bahrul-ulum-ab52721b7/",
     github: "https://github.com/MohBahrulUlum15",
-    profile_url: "test",
+    profile_url: "4",
   },
   {
     fullname: "Muhamad Zulfikar Nurdiana",
@@ -39,7 +39,7 @@ const authors = [
     path: "Cloud Computing",
     linkedIn: "https://www.linkedin.com/in/zulnurdiana/",
     github: "https://github.com/zulnurdiana",
-    profile_url: "test",
+    profile_url: "5",
   },
   {
     fullname: "Muhammad Aziz Rosyid Hidayat",
@@ -47,7 +47,7 @@ const authors = [
     path: "Cloud Computing",
     linkedIn: "https://www.linkedin.com/in/azizrosyid/",
     github: "https://github.com/azizrosyid",
-    profile_url: "test",
+    profile_url: "6",
   },
 ];
 

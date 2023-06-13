@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       profile_url: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
       },
     },
     {

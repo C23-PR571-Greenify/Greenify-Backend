@@ -31,7 +31,7 @@ module.exports = {
       },
       profile_url: {
         type: Sequelize.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       createdAt: Sequelize.DATE,
       updatedAt: Sequelize.DATE,

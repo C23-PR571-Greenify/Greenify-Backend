@@ -11,6 +11,7 @@ async function getAllAuthorHandler(req, res, next) {
         "path",
         "linkedIn",
         "github",
+        "profile_url",
       ],
     });
     if (!Authors)

@@ -8,6 +8,7 @@ const userRouter = require("./app/user/route");
 const authRouter = require("./app/auth/route");
 const categoryRouter = require("./app/category/route");
 const tourismRouter = require("./app/tourism/route");
+const authorRouter = require("./app/author/route");
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use("/users", userRouter);
 app.use("/auth", authRouter);
 app.use("/categories", categoryRouter);
 app.use("/tourism", tourismRouter);
+app.use("/authors", authorRouter);
 
 app.use((req, res, next) => {
   const error = new Error("Not Found");

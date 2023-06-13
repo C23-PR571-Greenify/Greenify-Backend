@@ -34,15 +34,7 @@ async function getAllTourismHandler(req, res, next) {
 
     const totalPages = Math.ceil(count / limit);
     const response = {
-      error: false,
-      message: "Successful get all Tourism",
-      data: tourisms,
-      pagination: {
-        totalItems: count,
-        totalPages,
-        currentPage: parseInt(page),
-        itemsPerPage: parseInt(limit),
-      },
+      data: tourisms
     };
 
     res.status(200).json(response);

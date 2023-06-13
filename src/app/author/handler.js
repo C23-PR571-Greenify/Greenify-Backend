@@ -13,6 +13,7 @@ async function getAllAuthorHandler(req, res, next) {
         "github",
         "profile_url",
       ],
+      order: [["id", "ASC"]],
     });
     if (!Authors)
       return res.status(404).json(errorRespone("Authors not found"));

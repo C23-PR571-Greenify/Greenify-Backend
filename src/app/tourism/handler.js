@@ -209,7 +209,7 @@ async function giveRatingTourism(req, res) {
 async function predictTourismHandler(req, res, next) {
   try {
     let page = parseInt(req.query.page) || 1;
-    let limit = parseInt(req.query.limit) || 25;
+    let limit = parseInt(req.query.limit) || 100;
     let lat = parseFloat(req.body.lat);
     let lng = parseFloat(req.body.lng);
     const offset = (page - 1) * limit;

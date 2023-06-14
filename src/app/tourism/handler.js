@@ -37,6 +37,38 @@ async function getAllTourismHandler(req, res, next) {
   }
 }
 
+async function getAllTourismByCategoryHandler(req, res, next) {
+  try {
+    const { id } = req.params;
+
+    const tourisms = await Tourism.findAll({
+      where: {
+        category_id: id,
+      },
+      include: [
+        {
+          model: models.tourism_image,
+          attributes: ["id", "image_url", "tourism_id"],
+        },
+      ],
+    });
+
+    if (tourisms.length === 0) {
+      return res
+        .status(404)
+        .json(errorRespone(`Not tourism with category ${id}`));
+    }
+
+    const response = {
+      data: tourisms,
+    };
+
+    res.status(200).json(response);
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function getSingleTourismHandler(req, res, next) {
   try {
     const tourism = await Tourism.findOne({
@@ -330,6 +362,7 @@ async function predictTourismHandler(req, res, next) {
 
 module.exports = {
   getAllTourismHandler,
+  getAllTourismByCategoryHandler,
   getSingleTourismHandler,
   createTourismHandler,
   updateTourismHandler,

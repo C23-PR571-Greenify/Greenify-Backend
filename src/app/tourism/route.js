@@ -11,6 +11,7 @@ router.post(
 );
 router.get("/", handler.getAllTourismHandler);
 router.get("/:id", handler.getSingleTourismHandler);
+router.get("/category/:id", handler.getAllTourismByCategoryHandler);
 router.post("/", handler.createTourismHandler);
 router.put("/:id", handler.updateTourismHandler);
 router.delete("/:id", handler.deleteTourismHandler);

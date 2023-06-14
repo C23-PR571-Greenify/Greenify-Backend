@@ -14,10 +14,7 @@ const calculateDistance = require("./haversineAlgorithm");
 
 async function getAllTourismHandler(req, res, next) {
   try {
-    const { page = 1, limit = 10 } = req.query;
-    const offset = (page - 1) * limit;
-
-    const { count, rows: tourisms } = await Tourism.findAndCountAll({
+    const tourisms = await Tourism.findAll({
       include: [
         {
           model: models.Category,
@@ -28,13 +25,10 @@ async function getAllTourismHandler(req, res, next) {
           attributes: ["id", "image_url", "tourism_id"],
         },
       ],
-      offset,
-      limit: parseInt(limit),
     });
 
-    const totalPages = Math.ceil(count / limit);
     const response = {
-      data: tourisms
+      data: tourisms,
     };
 
     res.status(200).json(response);

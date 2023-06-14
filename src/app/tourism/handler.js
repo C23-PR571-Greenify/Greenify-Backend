@@ -84,7 +84,7 @@ async function getSingleTourismHandler(req, res, next) {
         },
       ],
     });
-    res.status(200).json(respone("Berhasil mendapatkan tourism", tourism));
+    res.status(200).json(tourism);
   } catch (error) {
     next(error);
   }
